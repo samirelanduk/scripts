@@ -32,5 +32,9 @@ for year in years:
                 month_data[day] = []
             elif child.name == "ul" and list_started:
                 for item in child.find_all("li"):
-                    month_data[day].append(item)
+                    first_link = item.a
+                    month_data[day].append([
+                     first_link.text,
+                     first_link["href"]
+                    ])
         data.append(month_data)
