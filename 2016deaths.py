@@ -1,13 +1,16 @@
 from bs4 import BeautifulSoup
 import requests
 import calendar
+import json
+import os
+import numpy
 
-years = [2016]
+years = [n + 2000 for n in range(4, 17)]
 months = [calendar.month_name[n + 1] for n in range(12)]
 
 data = []
 for year in years:
-    for month in months[:3]:
+    for month in months[:2]:
         # Get page
         html = requests.get(
          "https://en.wikipedia.org/wiki/Deaths_in_%s_%i" % (month, year)
@@ -33,8 +36,12 @@ for year in years:
             elif child.name == "ul" and list_started:
                 for item in child.find_all("li"):
                     first_link = item.a
-                    month_data[day].append([
-                     first_link.text,
-                     first_link["href"]
-                    ])
+                    if first_link:
+                        month_data[day].append([
+                         first_link.text,
+                         first_link["href"]
+                        ])
         data.append(month_data)
+
+with open("data%sdeaths.json" % os.path.sep, "w") as f:
+    f.write(json.dumps(data))
