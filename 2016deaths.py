@@ -6,8 +6,8 @@ import json
 import os
 import numpy
 
-years = [n + 2000 for n in range(14, 17)]
-months = [calendar.month_name[n + 1] for n in range(12)]
+years = [n + 2000 for n in range(15, 17)]
+months = [calendar.month_name[n + 1] for n in range(2)]
 
 data = {}
 for year in years:
@@ -36,9 +36,17 @@ for year in years:
                     first_link = item.a
                     if first_link and "/wiki/" in first_link["href"] \
                      and "index.php" not in first_link["href"]:
+                        url = "https://en.wikipedia.org" + first_link["href"]
+                        try:
+                            person_wiki = requests.get(url).text
+                            soup = BeautifulSoup(person_wiki, "html.parser")
+                            length = len(soup.body.text)
+                        except Exception:
+                            length = 100
                         data[day].append([
                          first_link.text,
-                         first_link["href"]
+                         url,
+                         length
                         ])
 
 # Data analysis
@@ -66,8 +74,8 @@ for year_index, year in enumerate(years):
     print("\t%i:" % year, end=" ")
     for month_index, month in enumerate(months):
         print("%s:%i" % (
-         months[month_index][:3],
-         deaths_per_month[year_index * 12 + month_index]
+         months[month_index][0],
+         deaths_per_month[year_index * len(months) + month_index]
         ), end=" ")
     print("")
 
