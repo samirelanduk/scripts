@@ -40,6 +40,20 @@ for year in years:
                          first_link["href"]
                         ])
 
+# Data analysis
+deaths_per_year = []
+for year in years:
+    deaths_this_year = 0
+    for day in data:
+        if day.year == year:
+            deaths_this_year += len(data[day])
+    deaths_per_year.append(deaths_this_year)
+
+# Output to terminal
+print("Deaths per year:")
+for index, year in enumerate(years):
+    print("\t%i: %i" % (year, deaths_per_year[index]))
+
 # Replace dates with str date
 str_data = dict(data)
 for key in data:
