@@ -52,12 +52,16 @@ for year in years:
 # Data analysis
 deaths_per_year = []
 deaths_per_month = []
+fame_per_year = []
 for year in years:
     deaths_this_year = 0
+    fame_this_year = 0
     for day in data:
         if day.year == year:
             deaths_this_year += len(data[day])
+            fame_this_year += sum([d[2] for d in data[day]])
     deaths_per_year.append(deaths_this_year)
+    fame_per_year.append(fame_this_year)
     for month_num, month in enumerate(months, start=1):
         deaths_this_month = 0
         for day in data:
@@ -69,6 +73,9 @@ for year in years:
 print("Deaths per year")
 for index, year in enumerate(years):
     print("\t%i: %i" % (year, deaths_per_year[index]))
+print("Fame per year")
+for index, year in enumerate(years):
+    print("\t%i: %i" % (year, fame_per_year[index]))
 print("Deaths per month")
 for year_index, year in enumerate(years):
     print("\t%i:" % year, end=" ")
