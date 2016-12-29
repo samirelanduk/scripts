@@ -34,7 +34,8 @@ for year in years:
             elif child.name == "ul" and list_started:
                 for item in child.find_all("li"):
                     first_link = item.a
-                    if first_link and "/wiki/" in first_link["href"]:
+                    if first_link and "/wiki/" in first_link["href"] \
+                     and "index.php" not in first_link["href"]:
                         data[day].append([
                          first_link.text,
                          first_link["href"]
