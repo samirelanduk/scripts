@@ -7,7 +7,7 @@ import os
 import numpy
 
 years = [n + 2000 for n in range(15, 17)]
-months = [calendar.month_name[n + 1] for n in range(2)]
+months = [calendar.month_name[n + 1] for n in range(12)]
 
 data = {}
 for year in years:
@@ -53,6 +53,7 @@ for year in years:
 deaths_per_year = []
 deaths_per_month = []
 fame_per_year = []
+fame_per_month = []
 for year in years:
     deaths_this_year = 0
     fame_this_year = 0
@@ -64,10 +65,13 @@ for year in years:
     fame_per_year.append(fame_this_year)
     for month_num, month in enumerate(months, start=1):
         deaths_this_month = 0
+        fame_this_month = 0
         for day in data:
             if day.year == year and day.month == month_num:
                 deaths_this_month += len(data[day])
+                fame_this_month += sum([d[2] for d in data[day]])
         deaths_per_month.append(deaths_this_month)
+        fame_per_month.append(fame_this_month)
 
 # Output to terminal
 print("Deaths per year")
@@ -83,6 +87,15 @@ for year_index, year in enumerate(years):
         print("%s:%i" % (
          months[month_index][0],
          deaths_per_month[year_index * len(months) + month_index]
+        ), end=" ")
+    print("")
+print("Fame per month")
+for year_index, year in enumerate(years):
+    print("\t%i:" % year, end=" ")
+    for month_index, month in enumerate(months):
+        print("%s:%i" % (
+         months[month_index][0],
+         fame_per_month[year_index * len(months) + month_index]
         ), end=" ")
     print("")
 
