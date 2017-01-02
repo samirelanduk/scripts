@@ -6,7 +6,7 @@ import json
 import os
 import numpy
 
-years = [n + 2000 for n in range(15, 17)]
+years = [n + 2000 for n in range(4, 17)]
 months = [calendar.month_name[n + 1] for n in range(12)]
 
 data = {}
