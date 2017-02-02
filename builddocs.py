@@ -5,12 +5,26 @@ import os
 import subprocess
 import glob
 
+# Define google analytics code
+ga = """<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '%s', 'auto');
+  ga('send', 'pageview');
+</script>"""
+
 # Get information from user
 if len(sys.argv) < 2:
     print("\nWhere is the project?\n")
     sys.exit()
 project_location = sys.argv[1]
 project_name = sys.argv[1].split(os.path.sep)[-1]
+if len(sys.argv) < 3:
+    print("\nWhat is the google analytics code?\n")
+    sys.exit()
+google_analytics_code = sys.argv[2]
 
 # Build docs locally
 os.chdir(project_location)
@@ -19,6 +33,14 @@ subprocess.call("make html", shell=True)
 
 # Where are all the HTML files?
 html_files = glob.iglob('**/*.html', recursive=True)
+
+# Add google analytics to each html file
+for html_file in html_files:
+    with open(html_file) as f:
+        html = f.read()
+    html = html.replace("</head>", (ga % google_analytics_code) + "</head>")
+    with open(html_file, "w") as f:
+        f.write(html)
 
 # Remove remote files
 host = "stage.samireland.com"
