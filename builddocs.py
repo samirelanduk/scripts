@@ -26,15 +26,21 @@ if len(sys.argv) < 3:
     sys.exit()
 google_analytics_code = sys.argv[2]
 
+# Delete existing HTML files
+os.chdir(project_location)
+os.chdir(os.path.sep.join([project_name, "docs"]))
+html_files = glob.iglob('**/*.html', recursive=True)
+for html_file in html_files:
+    print("rm " + html_file)
+    subprocess.call("rm " + html_file, shell=True)
+
 # Build docs locally
 os.chdir(project_location)
 os.chdir(os.path.sep.join([project_name, "docs"]))
 subprocess.call("make html", shell=True)
 
-# Where are all the HTML files?
-html_files = glob.iglob('**/*.html', recursive=True)
-
 # Add google analytics to each html file
+html_files = glob.iglob('**/*.html', recursive=True)
 for html_file in html_files:
     with open(html_file) as f:
         html = f.read()
