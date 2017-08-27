@@ -1,9 +1,19 @@
-"""Builds the documentation of a project and uploads it to the server."""
+#! /usr/bin/env python3
 
 import sys
 import os
+import re
 import subprocess
 import glob
+print("")
+
+# Which package?
+if len(sys.argv) < 2:
+    print("\nWhat is the google analytics code?\n")
+    sys.exit()
+google_analytics_code = sys.argv[1]
+
+package = os.getcwd().split(os.path.sep)[-1]
 
 # Define google analytics code
 ga = """<script>
@@ -15,28 +25,14 @@ ga = """<script>
   ga('send', 'pageview');
 </script>"""
 
-# Get information from user
-if len(sys.argv) < 2:
-    print("\nWhere is the project?\n")
-    sys.exit()
-project_location = sys.argv[1]
-project_name = sys.argv[1].split(os.path.sep)[-1]
-if len(sys.argv) < 3:
-    print("\nWhat is the google analytics code?\n")
-    sys.exit()
-google_analytics_code = sys.argv[2]
-
 # Delete existing HTML files
-os.chdir(project_location)
-os.chdir(os.path.sep.join([project_name, "docs"]))
+os.chdir("docs")
 html_files = glob.iglob('**/*.html', recursive=True)
 for html_file in html_files:
     print("rm " + html_file)
     subprocess.call("rm " + html_file, shell=True)
 
 # Build docs locally
-os.chdir(project_location)
-os.chdir(os.path.sep.join([project_name, "docs"]))
 subprocess.call("make html", shell=True)
 
 # Add google analytics to each html file
@@ -48,14 +44,14 @@ for html_file in html_files:
     with open(html_file, "w") as f:
         f.write(html)
 
+
 # Remove remote files
-host = "stage.samireland.com"
-remote_location = "~/docs/"
+host = "46.101.29.186" # documentation server
 subprocess.call(
- "ssh %s 'rm -r %s%s/*'" % (host, remote_location, project_name), shell=True
+ "ssh %s 'rm -r ~/%s/*'" % (host, package), shell=True
 )
 
 # Push to server
 subprocess.call(
- "scp -r build/html/* %s:%s%s/" % (host, remote_location, project_name), shell=True
+ "scp -r build/html/* %s:~/%s/" % (host, package), shell=True
 )
