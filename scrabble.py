@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import sys
 from collections import Counter
 
@@ -25,9 +27,9 @@ else:
         print("Not fine:")
         for violation in sorted(violations):
             print("\tNeed %i %s tiles but there are only %i" % (
-                needed[violation],
-                violation.upper(),
-                letters[violation]
-                ))
+             needed[violation],
+             violation.upper(),
+             letters[violation]
+            ))
     
 
