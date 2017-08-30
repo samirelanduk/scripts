@@ -28,7 +28,7 @@ for d, num in seasons[:1]:
     files = sorted(files)
 
     html = requests.get(
-     "http://www.imdb.com/title/tt0108778/episodes?season={}".format(num)
+     "http://www.imdb.com/title/{}/episodes?season={}".format(imdb_id, num)
     ).text
     soup = BeautifulSoup(html, "html.parser")
     info = soup.find_all("div", {"class": "info"})
