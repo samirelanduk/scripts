@@ -15,7 +15,7 @@ def get_inner_circumference(sides):
 def get_outer_circumference(sides):
 	inner_angle = 360 / sides
 	other_angles = (180 - inner_angle) / 2
-	cross_bar = (sin(inner_angle) * 0.5) / sin(other_angles)
+	cross_bar = get_inner_circumference(sides) / sides
 	other_angles = 90 - other_angles
 	vertex_angle = 180 - (2 * other_angles)
 	half_side = (sin(other_angles) * cross_bar) / sin(vertex_angle)
