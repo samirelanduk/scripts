@@ -16,7 +16,7 @@ for file_name in files:
         blocks.append(f.read())
 
 # Remove pointless RST formatting
-blocks = [re.sub(r":py:(.+):`~*\.(.+)`", r"``\2``", block) for block in blocks]
+blocks = [re.sub(r":py:(.+?):\`~*\.(.+?)\`", r"``\2``", block) for block in blocks]
 
 # Save as README.rst
 with open("README.rst", "w") as f:
