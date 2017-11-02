@@ -17,13 +17,19 @@ blocks.append(
  ".. |travis| image:: https://api.travis-ci.org/samirelanduk/{}.svg?branch={}".format(package, branch)
 )
 blocks.append(
+ ".. _travis https://travis-ci.org/samirelanduk/{}/".format(package)
+)
+blocks.append(
  ".. |coveralls| image:: https://coveralls.io/repos/github/samirelanduk/{}/badge.svg?branch={}".format(package, branch)
+)
+blocks.append(
+ ".. _coveralls https://coveralls.io/github/samirelanduk/{}/".format(package)
 )
 blocks.append(
 ".. |pypi| image:: https://img.shields.io/pypi/pyversions/{}.svg".format(package)
 )
 blocks.append(
-"\n|travis| |coveralls| |pypi|"
+"\n|travis|_ |coveralls|_ |pypi|"
 )
 
 
