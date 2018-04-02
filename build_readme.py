@@ -13,24 +13,30 @@ branch = subprocess.check_output("git branch", shell=True).decode()
 branches = branch.split("\n")
 current_branch = [branch for branch in branches if branch.startswith("*")][0]
 branch = current_branch.split()[1]
+
+blocks.append(
+"|travis| |coveralls| |pypi|"
+)
+
 blocks.append(
  ".. |travis| image:: https://api.travis-ci.org/samirelanduk/{}.svg?branch={}".format(package, branch)
 )
-blocks.append(
- ".. _travis https://travis-ci.org/samirelanduk/{}/".format(package)
+blocks[-1] += (
+ "\n  :target: https://travis-ci.org/samirelanduk/{}/".format(package)
 )
 blocks.append(
  ".. |coveralls| image:: https://coveralls.io/repos/github/samirelanduk/{}/badge.svg?branch={}".format(package, branch)
 )
-blocks.append(
- ".. _coveralls https://coveralls.io/github/samirelanduk/{}/".format(package)
+blocks[-1] += (
+ "\n  :target: https://coveralls.io/github/samirelanduk/{}/".format(package)
 )
 blocks.append(
 ".. |pypi| image:: https://img.shields.io/pypi/pyversions/{}.svg".format(package)
 )
-blocks.append(
-"\n|travis|_ |coveralls|_ |pypi|"
+blocks[-1] += (
+ "\n  :target: https://pypi.org/project/{}/".format(package)
 )
+
 
 
 # Get text blocks
