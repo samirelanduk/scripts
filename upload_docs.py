@@ -4,16 +4,18 @@ import sys
 import os
 import re
 import subprocess
+import requests
 import glob
 print("")
 
-# Which package?
-if len(sys.argv) < 2:
-    print("\nWhat is the google analytics code?\n")
-    sys.exit()
-google_analytics_code = sys.argv[1]
 
+# Which package?
 package = os.getcwd().split(os.path.sep)[-1]
+
+# Get analytics code
+html = requests.get("https://{}.samireland.com/".format(package)).text
+google_analytics_code = re.findall(r"ga\('create', '(.+?)\'", html)[0]
+
 
 # Define google analytics code
 ga = """<script>
@@ -46,12 +48,12 @@ for html_file in html_files:
 
 
 # Remove remote files
-host = "46.101.29.186" # documentation server
+host = "159.65.18.68" # documentation server
 subprocess.call(
- "ssh %s 'rm -r ~/%s/*'" % (host, package), shell=True
+ "ssh %s 'rm -r ~/%s.samireland.com/*'" % (host, package), shell=True
 )
 
 # Push to server
 subprocess.call(
- "scp -r build/html/* %s:~/%s/" % (host, package), shell=True
+ "scp -r build/html/* %s:~/%s.samireland.com/" % (host, package), shell=True
 )
