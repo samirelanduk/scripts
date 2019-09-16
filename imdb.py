@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 import sys
 import os
 from collections import Counter
@@ -20,7 +22,7 @@ season_num = [int(d.split()[-1]) for d in dirs]
 seasons = zip(dirs, season_num)
 seasons = sorted(seasons, key=lambda k: k[1])
 
-for d, num in seasons[:1]:
+for d, num in seasons:
     files = os.listdir("{}/{}".format(directory, d))
     extensions = Counter([f.split(".")[-1] for f in files])
     extension = extensions.most_common()[0][0]
