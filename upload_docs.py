@@ -13,8 +13,11 @@ print("")
 package = os.getcwd().split(os.path.sep)[-1]
 
 # Get analytics code
-html = requests.get("https://{}.samireland.com/".format(package)).text
-google_analytics_code = re.findall(r"ga\('create', '(.+?)\'", html)[0]
+if len(sys.argv) > 1:
+    google_analytics_code = sys.argv[1]
+else:
+    html = requests.get("https://{}.samireland.com/".format(package)).text
+    google_analytics_code = re.findall(r"ga\('create', '(.+?)\'", html)[0]
 
 
 # Define google analytics code
