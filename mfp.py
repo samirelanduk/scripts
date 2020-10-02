@@ -1,5 +1,6 @@
 from selenium.webdriver import Chrome
 from selenium.common.exceptions import TimeoutException
+from time import sleep
 import json
 
 USERNAME = ""
@@ -7,6 +8,7 @@ PASSWORD = ""
 
 browser = Chrome()
 browser.get("https://www.myfitnesspal.com/account/login")
+sleep(2)
 form = browser.find_element_by_class_name("LoginForm")
 email, password = form.find_elements_by_tag_name("input")[2:4]
 email.send_keys(USERNAME)
