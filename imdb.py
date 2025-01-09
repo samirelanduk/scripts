@@ -29,13 +29,22 @@ for d, num in seasons:
     files = [f for f in files if f.split(".")[-1] == extension]
     files = sorted(files)
 
+    # Spoof browser
+    print("https://www.imdb.com/title/{}/episodes?season={}".format(imdb_id, num))
     html = requests.get(
-     "http://www.imdb.com/title/{}/episodes?season={}".format(imdb_id, num)
+     "https://www.imdb.com/title/{}/episodes?season={}".format(imdb_id, num),
+        headers={
+            "Accept-Language": "en-US,en;q=0.5",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 \
+            (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"
+        }
     ).text
     soup = BeautifulSoup(html, "html.parser")
-    info = soup.find_all("div", {"class": "info"})
-    episode_titles = [div.find("a").text for div in info]
+    info = soup.find_all("div", {"class": "ipc-list-card"})
+    info = [i for i in info if i.find("a") and i.find("a").text != "Sign In"]
+    episode_titles = [[a for a in div.find_all("a") if a.text][0].text for div in info]
     episode_titles = [f.replace(":", "") for f in episode_titles]
+    episode_titles = [e.split(" ∙ ")[1] if " ∙ " in e else e for e in episode_titles]
 
     for index, titles in enumerate(zip(files, episode_titles), start=1):
         os.rename(
